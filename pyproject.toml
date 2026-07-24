@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pygitcomand"
+version = "0.1.0"
+description = "A friendly Git CLI written in Python."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+authors = [
+    { name = "Peg626" }
+]
+keywords = [
+    "git",
+    "github",
+    "cli",
+    "command",
+    "terminal"
+]
+dependencies = [
+    "pyanimcli"
+]
+
+[project.scripts]
+pygit = "pygit.__main__:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["pygit*"]
