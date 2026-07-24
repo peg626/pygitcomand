@@ -4,7 +4,6 @@ import subprocess
 parser = argparse.ArgumentParser(prog="pygit")
 sub = parser.add_subparsers(dest='command')
 def grun(*args):
-    
     subprocess.run(["git", *args])
 def cmd_init(args):
     grun("init")
@@ -16,7 +15,7 @@ def cmd_add(args):
         grun("commit", "-m", args.commit)
 def cmd_publish(args):
     if args.pull:
-        grun("pull", args.repo)
+        grun("pull", "--allow-unrelated-histories", args.repo)
     if args.upstream:
         grun("push", "--set-upstream", args.upstream, args.repo)
     else:
@@ -28,11 +27,17 @@ def cmd_update(args):
     if args.commit:
         grun("commit", "-m", args.commit)
     if args.pull:
-        grun("pull", args.repo)
+        grun("pull", "--allow-unrelated-histories", args.repo)
     if args.upstream:
         grun("push", "--set-upstream", args.upstream, args.repo)
     else:
         grun("push", args.repo)
+def cmd_download(args):
+    if args.eurl:
+        repo = args.repo.split("/")
+        grun("clone", f"https://github.com/{repo[0]}/{repo[1]}/{repo[1]}.git")
+    else:
+        grun("clone", args.repo)
 def main():
     p_init = sub.add_parser('register', help='Initialize a new repo')
     p_init.set_defaults(func=cmd_init)
@@ -49,8 +54,9 @@ def main():
     p_p = sub.add_parser('publish', help='Publish the repo. use -p or --pull to use pull')
     p_p.set_defaults(func=cmd_publish)
     p_p.add_argument('repo', help='Remote name')
-    p_p.add_argument('-p', "--pull", help="Pull before")
+    p_p.add_argument('-p', "--pull", help="Pull before", action="store_true")
     p_p.add_argument('-su', "--set-upstream", dest="upstream", help="Set Upstream branch")
+    
     p_commit = sub.add_parser("commit", help="commit the repo")
     p_commit.set_defaults(func=cmd_commit)
     p_commit.add_argument("msg", help="Commit message")
@@ -59,8 +65,12 @@ def main():
     p_update.add_argument('path', help='path. use "." to here')
     p_update.add_argument('repo', help='Remote name')
     p_update.add_argument('-c',"--commit",type=str, help="commit message")
-    p_update.add_argument('-p', "--pull", help="Pull before")
+    p_update.add_argument('-p', "--pull", help="Pull before", action="store_true")
     p_update.add_argument('-su', "--set-upstream", dest="upstream", help="Set Upstream branch")
+    p_clone = sub.add_parser("download", aliases=["get","clone"], help="clone/download a repo, use -nh or --no-https to simplificty ('pygit clone -nh peg626/pygitcommand')")
+    p_clone.set_defaults(func=cmd_download)
+    p_clone.add_argument("-nh", "--no-https", dest="eurl", help="simplificy. ('pygit clone peg626/pygitcomand')", action="store_true")
+    p_clone.add_argument("repo", help="the .git url link.")
     args = parser.parse_args()
     if hasattr(args, "func"):
         args.func(args)
