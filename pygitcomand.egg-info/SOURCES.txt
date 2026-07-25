@@ -1,0 +1,11 @@
+LICENSE
+README.md
+pyproject.toml
+pygit/__init__.py
+pygit/__main__.py
+pygitcomand.egg-info/PKG-INFO
+pygitcomand.egg-info/SOURCES.txt
+pygitcomand.egg-info/dependency_links.txt
+pygitcomand.egg-info/entry_points.txt
+pygitcomand.egg-info/requires.txt
+pygitcomand.egg-info/top_level.txt

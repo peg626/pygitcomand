@@ -1,0 +1,14 @@
+Metadata-Version: 2.4
+Name: pygitcomand
+Version: 0.1.0
+Summary: A friendly Git CLI written in Python.
+Author: Peg626
+License-Expression: MIT
+Keywords: git,github,cli,command,terminal
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pyanimcli
+Dynamic: license-file
+
+not here.

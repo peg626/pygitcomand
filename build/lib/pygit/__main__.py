@@ -23,10 +23,7 @@ def cmd_publish(args):
 def cmd_commit(args):
     grun("commit", "-m", args.msg)
 def cmd_update(args):
-    path = "."
-    if args.path:
-        path = args.path
-    grun("add", path)
+    grun("add", args.path)
     if args.commit:
         grun("commit", "-m", args.commit)
     if args.pull:
@@ -42,7 +39,7 @@ def cmd_download(args):
     else:
         grun("clone", args.repo)
 def main():
-    p_init = sub.add_parser('register',aliases=["init"], help='Initialize a new repo')
+    p_init = sub.add_parser('register', help='Initialize a new repo')
     p_init.set_defaults(func=cmd_init)
     p_remote = sub.add_parser('remote', help="Remote")
     p_r_cmd = p_remote.add_subparsers(dest='rc')
@@ -57,7 +54,7 @@ def main():
     p_p = sub.add_parser('publish', help='Publish the repo. use -p or --pull to use pull')
     p_p.set_defaults(func=cmd_publish)
     p_p.add_argument('repo', help='Remote name')
-    p_p.add_argument('-pl', "--pull", help="Pull before", action="store_true")
+    p_p.add_argument('-p', "--pull", help="Pull before", action="store_true")
     p_p.add_argument('-su', "--set-upstream", dest="upstream", help="Set Upstream branch")
     
     p_commit = sub.add_parser("commit", help="commit the repo")
@@ -65,10 +62,10 @@ def main():
     p_commit.add_argument("msg", help="Commit message")
     p_update = sub.add_parser("update",help="Update repo")
     p_update.set_defaults(func=cmd_update)
-    p_update.add_argument('-p', "--path", dest="path",  help='path. use "." to here')
+    p_update.add_argument('path', help='path. use "." to here')
     p_update.add_argument('repo', help='Remote name')
     p_update.add_argument('-c',"--commit",type=str, help="commit message")
-    p_update.add_argument('-pl', "--pull", help="Pull before", action="store_true")
+    p_update.add_argument('-p', "--pull", help="Pull before", action="store_true")
     p_update.add_argument('-su', "--set-upstream", dest="upstream", help="Set Upstream branch")
     p_clone = sub.add_parser("download", aliases=["get","clone"], help="clone/download a repo, use -nh or --no-https to simplificty ('pygit clone -nh peg626/pygitcommand')")
     p_clone.set_defaults(func=cmd_download)
